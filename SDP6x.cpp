@@ -34,10 +34,18 @@
 #include "SDP6x.h"
 
 #define SCALEFACTOR 240.0
+
+//extern float ScaleFactor;
+
 // NOTE you will need to change the SCALEFACTOR to the appropriate value for your sensor
 //  Don't forget the .0 at the end, it makes sure Arduino does not round the number
 // SENSOR       | SDP6xx-500Pa and SDP5xx  |  SDP6x0-125Pa  |  SDP6x0-25Pa  |
 // SCALEFACTOR  |         60.0             |     240.0      |     1200.0    | (1/Pa)
+
+SDP6xClass::SDP6xClass(void)
+{
+	ScaleFactor=SCALEFACTOR;
+}
 
 /******************************************************************************
  * Global Functions
@@ -53,7 +61,7 @@ float SDP6xClass::GetPressureDiff(void)
 {
   int16_t res;
   if (readSensor(ePresHoldCmd, (uint16_t*)&res)) {
-	return ((float)(res)/SCALEFACTOR);
+	return ((float)(res)/ScaleFactor);
   } else {
 	  return -10000000;
   }
@@ -73,7 +81,7 @@ bool SDP6xClass::readSensor(uint8_t command, uint16_t* res)
 	
     Wire.beginTransmission(eSDP6xAddress);  //begin
     Wire.write(command);          //send the pointer location
-    delay(100);
+    delay(10);
     Wire.endTransmission();                 //end
 
     Wire.requestFrom(eSDP6xAddress, 3);

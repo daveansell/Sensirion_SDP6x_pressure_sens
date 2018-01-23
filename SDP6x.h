@@ -69,8 +69,10 @@ class SDP6xClass
 	void writeSensor(uint16_t data);
   
   public:
+    SDP6xClass(void);
     float GetPressureDiff(void);
 	void SetSensorResolution(etSensorResolutions resolution);
+    float ScaleFactor;
 };
 
 extern SDP6xClass SDP6x;
